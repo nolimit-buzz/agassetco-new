@@ -5,31 +5,18 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Zap, Coins, Settings, BarChart3 } from 'lucide-react';
 import SectionHeader from './SectionHeader';
+import type { IntroductionSection } from '@/lib/strapi/types';
+import { richTextToPlain } from '@/lib/strapi/utils';
 
-const services = [
-  {
-    icon: Coins,
-    title: "Lease-to-Own",
-    desc: "Removing CapEx barriers for farmers."
-  },
-  {
-    icon: Zap,
-    title: "Smart Deployment",
-    desc: "High-yield assets for grid stability."
-  },
-  {
-    icon: BarChart3,
-    title: "Tech-Enabled",
-    desc: "IoT tracking for bankable data."
-  },
-  {
-    icon: Settings,
-    title: "Asset Management",
-    desc: "Full lifecycle O&M support."
-  }
-];
+const BULLET_ICONS = [Coins, Zap, BarChart3, Settings];
 
-const Introduction: React.FC = () => {
+interface IntroductionProps {
+  data?: IntroductionSection | null;
+}
+
+const Introduction: React.FC<IntroductionProps> = ({ data }) => {
+  const sectionLabel = data?.sectionLabel || 'Introduction';
+  const sectionTitle = data?.title ? richTextToPlain(data.title) : 'Pioneering Productive Use of Energy in Agriculture.';
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -56,10 +43,10 @@ const Introduction: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6">
         
         {/* 1. Standardized Header */}
-        <SectionHeader 
-          number="01" 
-          category="Introduction" 
-          title={<>Pioneering Productive Use <br /> of Energy in Agriculture.</>} 
+        <SectionHeader
+          number="01"
+          category={sectionLabel}
+          title={sectionTitle}
         />
 
         {/* 2. Split Layout */}
@@ -87,48 +74,48 @@ const Introduction: React.FC = () => {
           </motion.div>
 
           {/* Right: 2x2 Interactive Grid */}
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             className="grid grid-cols-1 md:grid-cols-2"
           >
-            {services.map((service, index) => (
-              <motion.div 
-                key={index}
-                variants={itemVariants as any}
-                className={`
-                  group relative border-gray-100 p-8 flex flex-col justify-between min-h-[280px] transition-all duration-500 cursor-pointer
-                  hover:bg-ag-green-950
-                  ${index % 2 === 0 ? 'md:border-r' : ''}
-                  ${index < 2 ? 'border-b' : ''}
-                  border-b md:border-b-0
-                  last:border-b-0
-                `}
-              >
-                {/* Icon */}
-                <div className="mb-6">
-                  <service.icon className="w-8 h-8 text-ag-green-950 group-hover:text-ag-lime transition-colors duration-300 stroke-[1.5]" />
-                </div>
+            {(data?.bullets ?? []).slice(0, 4).map((bullet, index) => {
+              const Icon = BULLET_ICONS[index % BULLET_ICONS.length];
+              return (
+                <motion.div
+                  key={bullet.id}
+                  variants={itemVariants as any}
+                  className={`
+                    group relative border-gray-100 p-8 flex flex-col justify-between min-h-[280px] transition-all duration-500 cursor-pointer
+                    hover:bg-ag-green-950
+                    ${index % 2 === 0 ? 'md:border-r' : ''}
+                    ${index < 2 ? 'border-b' : ''}
+                    border-b md:border-b-0
+                    last:border-b-0
+                  `}
+                >
+                  <div className="mb-6">
+                    <Icon className="w-8 h-8 text-ag-green-950 group-hover:text-ag-lime transition-colors duration-300 stroke-[1.5]" />
+                  </div>
 
-                {/* Text Content */}
-                <div>
-                  <h3 className="text-2xl font-medium text-ag-green-950 group-hover:text-white transition-colors duration-300 mb-3">
-                    {service.title}
-                  </h3>
-                  <p className="text-sm text-gray-500 group-hover:text-white/70 transition-colors duration-300 leading-relaxed">
-                    {service.desc}
-                  </p>
-                </div>
+                  <div>
+                    <h3 className="text-2xl font-medium text-ag-green-950 group-hover:text-white transition-colors duration-300 mb-3">
+                      {bullet.label}
+                    </h3>
+                    <p className="text-sm text-gray-500 group-hover:text-white/70 transition-colors duration-300 leading-relaxed">
+                      {bullet.description}
+                    </p>
+                  </div>
 
-                {/* Hover CTA */}
-                <div className="mt-8 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-transparent group-hover:text-ag-lime transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                  <span>View Details</span>
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </motion.div>
-            ))}
+                  <div className="mt-8 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-transparent group-hover:text-ag-lime transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                    <span>View Details</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </motion.div>
+              );
+            })}
           </motion.div>
 
         </div>

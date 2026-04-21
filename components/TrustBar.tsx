@@ -2,18 +2,17 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import type { TrustBarSection } from '@/lib/strapi/types';
 
-const TrustBar: React.FC = () => {
-  const partners = [
-    "World Bank",
-    "REA",
-    "Agronomie",
-    "Power Africa",
-    "Shell Foundation"
-  ];
+interface TrustBarProps {
+  data?: TrustBarSection | null;
+}
 
+const TrustBar: React.FC<TrustBarProps> = ({ data }) => {
+  const sectionLabel = data.label;
+  const partnerNames = data?.partners?.map(p => p.name) || [];
   // Quadruple the list to ensure seamless infinite scrolling
-  const marqueeList = [...partners, ...partners, ...partners, ...partners];
+  const marqueeList = [...partnerNames, ...partnerNames, ...partnerNames, ...partnerNames];
 
   return (
     <section className="bg-ag-green-950 py-16 md:py-24 border-b border-white/5 relative z-30 snap-start overflow-hidden">
@@ -22,7 +21,7 @@ const TrustBar: React.FC = () => {
         {/* Title - Styled like the Hero Section Label */}
         <div className="text-center mb-12 md:mb-16">
            <p className="text-base font-bold text-ag-lime uppercase tracking-[0.2em] drop-shadow-sm">
-             Trusted by Global Institutions & Infrastructure Leaders
+             {sectionLabel}
            </p>
         </div>
 
@@ -44,8 +43,8 @@ const TrustBar: React.FC = () => {
                 }}
             >
                 {marqueeList.map((name, i) => (
-                    <span 
-                        key={i} 
+                    <span
+                        key={i}
                         className="text-3xl md:text-4xl font-serif font-bold text-white/30 whitespace-nowrap group-hover:text-white transition-colors duration-700 cursor-default select-none"
                     >
                         {name}
