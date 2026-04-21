@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import Image from 'next/image';
 
 interface FooterProps {
   /* Updated union to include news-detail and other missing pages to stay consistent with App.tsx */
@@ -20,14 +21,22 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       <div className="max-w-7xl mx-auto px-6">
         
         {/* 1. Top Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24">
           
           {/* Branding Column */}
           <div className="col-span-1 md:col-span-1 pr-8">
             <div className="flex items-end gap-1 mb-6 select-none cursor-pointer" onClick={(e) => handleLinkClick(e, 'home')}>
-               <span className="text-3xl font-bold tracking-tighter text-ag-green-950 leading-none">
+               {/* <span className="text-3xl font-bold tracking-tighter text-ag-green-950 leading-none">
                  AgAsset<span className="text-ag-lime">Co</span>
-               </span>
+               </span> */}
+               <Image
+                src="/logo.svg"
+                alt="AgAsset Co"
+                width={140}
+                height={64}
+                className={`w-auto transition-all duration-500 h-10 lg:h-14`}
+                priority
+              />
                <div className="relative w-8 h-8 -mb-1 ml-1">
                  <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible" fill="none">
                     <circle cx="50" cy="50" r="25" stroke="#0F5132" strokeWidth="8" />
@@ -83,7 +92,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
 
           {/* Links 3 */}
-          <div>
+          {/* <div>
              <h4 className="font-bold mb-6 text-base uppercase tracking-widest text-gray-400">Connect</h4>
              <ul className="space-y-4 text-lg font-medium">
                {['LinkedIn', 'Twitter / X', 'Medium'].map(item => (
@@ -95,7 +104,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                  </li>
                ))}
              </ul>
-          </div>
+          </div> */}
 
         </div>
 

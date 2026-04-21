@@ -98,7 +98,7 @@ const Hero: React.FC = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-[clamp(3.5rem,8vw,7rem)] leading-[1.05] font-bold text-white tracking-tight drop-shadow-lg will-change-transform"
+                    className="text-[clamp(3.5rem,8vw,6.2rem)] leading-[1.05] font-bold text-white tracking-tight drop-shadow-lg will-change-transform"
                 >
                     Productive Use <br />
                     of <span className="text-ag-lime">Energy Financing.</span>
@@ -127,7 +127,7 @@ const Hero: React.FC = () => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.7, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="group bg-white hover:bg-ag-lime text-ag-green-950 hover:text-white px-8 py-4 rounded-full font-bold text-sm uppercase tracking-wider transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-ag-lime/20"
+                    className="group bg-white hover:bg-ag-lime text-ag-green-950 hover:text-white px-8 py-4 rounded-full font-bold text-sm uppercase tracking-wider transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-ag-lime/20 "
                 >
                     Partner With Us
                     <div className="w-8 h-8 bg-ag-green-950 group-hover:bg-white rounded-full flex items-center justify-center transition-colors">
@@ -137,7 +137,7 @@ const Hero: React.FC = () => {
             </motion.div>
 
             {/* Bottom-Right: Data/Stats */}
-            <div className="flex gap-12 md:gap-16">
+            <div className="flex gap-12 md:gap-16 ">
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

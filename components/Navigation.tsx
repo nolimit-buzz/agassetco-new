@@ -4,6 +4,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronDown, ArrowRight, Building2, Users } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface NavigationProps {
   onNavigate?: (page: 'home' | 'about' | 'team' | 'solutions' | 'portfolio' | 'news' | 'contact' | 'terms' | 'privacy' | 'news-detail' | 'project-detail') => void;
@@ -60,7 +62,7 @@ const Navigation: React.FC<NavigationProps> = ({ onNavigate, currentPage = 'home
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between h-14">
             
-            <button onClick={(e) => handleLinkClick(e, 'home')} className="flex items-center gap-2 shrink-0 relative z-50 outline-none group">
+            {/* <button onClick={(e) => handleLinkClick(e, 'home')} className="flex items-center gap-2 shrink-0 relative z-50 outline-none group">
               <div 
                 className={`w-8 h-8 flex items-center justify-center rounded-full shadow-sm transition-all duration-500 ${
                   isLightMode ? 'bg-ag-green-950' : 'bg-ag-lime'
@@ -82,7 +84,18 @@ const Navigation: React.FC<NavigationProps> = ({ onNavigate, currentPage = 'home
               >
                 AgAsset<span className="text-ag-lime">Co</span>
               </span>
-            </button>
+            </button> */}
+
+             <Link href="/" className="flex items-center shrink-0 relative z-50 outline-none group">
+              <Image
+                src={isLightMode ? '/logo.svg' : '/logo-white.svg'}
+                alt="AgAsset Co"
+                width={140}
+                height={64}
+                className={`w-auto transition-all duration-500 ${isLightMode ? 'h-10 lg:h-14' : 'h-9 lg:h-14'}`}
+                priority
+              />
+            </Link>
 
             <div className="hidden lg:block absolute left-1/2 -translate-x-1/2">
                <div 
