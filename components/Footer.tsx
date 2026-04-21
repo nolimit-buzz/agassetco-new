@@ -4,6 +4,7 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface FooterProps {
   /* Updated union to include news-detail and other missing pages to stay consistent with App.tsx */
@@ -119,11 +120,23 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* 3. Bottom Utility Row */}
-        <div className="flex flex-col md:flex-row justify-between items-center text-base font-bold text-gray-400 uppercase tracking-widest mt-4">
+        {/* <div className="flex flex-col md:flex-row justify-between items-center text-base font-bold text-gray-400 uppercase tracking-widest mt-4">
            <div className="flex gap-8">
               <a href="#" onClick={(e) => handleLinkClick(e, 'privacy')} className="hover:text-ag-green-950 transition-colors">Privacy Policy</a>
               <a href="#" onClick={(e) => handleLinkClick(e, 'terms')} className="hover:text-ag-green-950 transition-colors">Terms</a>
               <a href="#" onClick={(e) => handleLinkClick(e, 'cookie-policy')} className="hover:text-ag-green-950 transition-colors">Cookies</a>
+           </div>
+           <div className="mt-4 md:mt-0 tracking-[0.2em]">
+              Energy for Growth
+           </div>
+        </div> */}
+
+
+             <div className="flex flex-col md:flex-row md:justify-between items-center text-sm font-bold text-gray-400 uppercase md:tracking-widest mt-4">
+           <div className="flex gap-8">
+              <Link href="/privacy" className="hover:text-ag-green-950 transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-ag-green-950 transition-colors">Terms</Link>
+              <Link href="/cookie-policy" className="hover:text-ag-green-950 transition-colors">Cookie Policy</Link>
            </div>
            <div className="mt-4 md:mt-0 tracking-[0.2em]">
               Energy for Growth
