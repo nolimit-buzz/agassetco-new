@@ -25,10 +25,10 @@ const config: Config = {
         sans: ['Outfit', 'sans-serif'],
       },
       fontSize: {
-        'xs': ['8px', { lineHeight: '12px' }],
-        'sm': ['10px', { lineHeight: '14px' }],
+        'xs': ['12px', { lineHeight: '14px' }],
+        'sm': ['14px', { lineHeight: '18px' }],
         'base': ['12px', { lineHeight: '16px' }],
-        'lg': ['14px', { lineHeight: '20px' }],
+        'lg': ['16px', { lineHeight: '24px' }],
         'xl': ['16px', { lineHeight: '24px' }],
         '2xl': ['18px', { lineHeight: '28px' }],
         '3xl': ['20px', { lineHeight: '32px' }],

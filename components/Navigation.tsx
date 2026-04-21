@@ -101,7 +101,7 @@ const Navigation: React.FC<NavigationProps> = ({ onNavigate, currentPage = 'home
                       <a 
                         href="#"
                         onClick={(e) => link.hasMega ? handleLinkClick(e, 'about') : handleLinkClick(e, link.id as any)}
-                        className={`text-lg font-semibold relative group transition-all duration-300 flex items-center gap-1 ${
+                        className={`text-sm font-semibold relative group transition-all duration-300 flex items-center gap-1 ${
                           (currentPage === link.id || (link.hasMega && (currentPage === 'about' || currentPage === 'team')))
                             ? 'text-ag-lime' 
                             : (isLightMode ? 'text-ag-green-950 hover:text-ag-lime' : 'text-white/80 hover:text-white')

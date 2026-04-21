@@ -110,7 +110,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* 3. Bottom Utility Row */}
-        <div className="flex flex-col md:flex-row justify-between items-center text-sm font-bold text-gray-400 uppercase tracking-widest mt-4">
+        <div className="flex flex-col md:flex-row justify-between items-center text-base font-bold text-gray-400 uppercase tracking-widest mt-4">
            <div className="flex gap-8">
               <a href="#" onClick={(e) => handleLinkClick(e, 'privacy')} className="hover:text-ag-green-950 transition-colors">Privacy Policy</a>
               <a href="#" onClick={(e) => handleLinkClick(e, 'terms')} className="hover:text-ag-green-950 transition-colors">Terms</a>
