@@ -39,7 +39,7 @@ const ProblemSolution: React.FC<ProblemSolutionProps> = ({ data }) => {
     { id: 'ops', label: '#OPS', desc: "Without a maintenance ecosystem, machinery fails." },
     { id: 'waste', label: '#WASTE', desc: "Expensive equipment becomes scrap metal in months." }
   ];
-  const defaultDesc = "The Asset Graveyard: Investors retreat as capital turns into rusted metal.";
+  const defaultDesc = data?.challenge_card?.[2]?.subtitle;
 
   return (
     <section ref={containerRef} className="bg-white relative snap-start">
@@ -79,14 +79,14 @@ const ProblemSolution: React.FC<ProblemSolutionProps> = ({ data }) => {
             className="bg-ag-green-950 rounded-[0.7rem] p-8 flex flex-col justify-between relative group hover:shadow-2xl hover:shadow-ag-green-900/20 transition-all duration-300 transform hover:-translate-y-1"
           >
              <div className="flex justify-between items-start">
-               <span className="text-white/70 text-sm font-light uppercase tracking-wider">Developer Pain</span>
+               <span className="text-white/70 text-sm font-light uppercase tracking-wider">{data?.challenge_card?.[0]?.title}</span>
                <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white/10 transition-colors">
-                 <BatteryWarning className="text-white w-5 h-5 stroke-[1.5]" />
+                 <data className="text-white w-5 h-5 stroke-[1.5]" />
                </div>
              </div>
              <div>
                <div className="text-3xl font-medium text-white mb-4 leading-tight">
-                 {data?.challenge_card?.[0]?.title || <>The Utilization <br/><span className="text-ag-lime">Gap</span></>}
+                 {data?.challenge_card?.[0]?.subtitle || <>The Utilization <br/><span className="text-ag-lime">Gap</span></>}
                </div>
                <p className="text-white/60 text-sm leading-relaxed font-light">
                  {data?.challenge_card?.[0]?.description || "Solar developers build expensive grids, but rural communities lack the machinery to consume enough power, making grids unprofitable."}
@@ -127,7 +127,7 @@ const ProblemSolution: React.FC<ProblemSolutionProps> = ({ data }) => {
             className="bg-[#F3F4F6] rounded-[0.7rem] p-8 flex flex-col justify-between group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
           >
              <div className="flex justify-between items-start mb-4">
-               <span className="text-ag-green-950/60 text-sm font-light uppercase tracking-wider">Investor Pain</span>
+               <span className="text-ag-green-950/60 text-sm font-light uppercase tracking-wider">{data?.challenge_card?.[2]?.title || "Investor Pain"}</span>
                <div className="w-12 h-12 rounded-full border border-ag-green-950/10 flex items-center justify-center bg-white shadow-sm">
                  <Wrench className="text-ag-green-950 w-5 h-5 stroke-[1.5]" />
                </div>
