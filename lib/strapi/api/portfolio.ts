@@ -24,7 +24,7 @@ export async function getPortfolioPage(): Promise<PortfolioPageData> {
         'populate[PortfolioSections][populate]': '*',
         // Deep-populate nested relations per component
         'populate[PortfolioSections][on][sections.portfolio-hero][populate]': '*',
-        'populate[PortfolioSections][on][sections.reach][populate]': '*',
+        'populate[PortfolioSections][on][sections.reach][populate][projects_showcase][populate]': '*',
         'populate[PortfolioSections][on][sections.case-studies][populate][projects][populate]': '*',
         'populate[PortfolioSections][on][sections.the-challenge][populate][challenge_card][populate]': '*',
         'populate[PortfolioSections][on][sections.validation][populate][validation_cards][populate]': '*',

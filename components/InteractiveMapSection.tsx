@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Globe } from 'lucide-react';
 import Image from 'next/image';
+import { ReachSection } from '@/lib/strapi';
+
 interface MapLocation {
   id: string;
   stateName: string;
@@ -11,67 +13,55 @@ interface MapLocation {
   description: string;
   tag: string;
   sdg: string;
-  // Percentage positions relative to the SVG container (top/left)
   mapCoordinates: { top: string; left: string };
 }
 
-// Coordinates derived from geographic position within Nigeria's bounding box:
-// lon: 2.65–14.68°E  →  x = (lon - 2.65) / 12.03 * 100 %
-// lat: 4.24–13.88°N  →  y = (13.88 - lat) / 9.64  * 100 %
-const LOCATIONS: MapLocation[] = [
-  {
-    id: 'imo',
-    stateName: 'Imo State',
-    projectTitle: 'Solar Hybrid Mini Grid Solution',
-    description: 'Providing constant power to a cluster of 15 SMEs, specializing in localized palm oil processing and packaging.',
-    tag: 'Renewable Energy',
-    sdg: 'SDG 7',
-    mapCoordinates: { top: '82%', left: '37%' }   // ~7.0°E, 5.5°N
-  },
-  {
-    id: 'niger',
-    stateName: 'Niger State',
-    projectTitle: 'Hydro-Agri Integration Hub',
-    description: 'A pioneer project linking small-scale hydro-power to rice milling facilities, reducing diesel dependency by 95%.',
-    tag: 'Sustainable Infrastructure',
-    sdg: 'SDG 9',
-    mapCoordinates: { top: '40%', left: '28%' }   // ~6.0°E, 10.0°N
-  },
-  {
-    id: 'ogun',
-    stateName: 'Ogun State',
-    projectTitle: 'Industrial Cold Storage Cluster',
-    description: 'Powering a network of 10 modular cold rooms to eliminate waste in the perishables supply chain for urban markets.',
-    tag: 'Agro-Logistics',
-    sdg: 'SDG 12',
-    mapCoordinates: { top: '70%', left: '8%' }    // ~3.5°E, 7.0°N
-  },
-  {
-    id: 'kaduna',
-    stateName: 'Kaduna State',
-    projectTitle: 'Grain Processing Grid',
-    description: 'Integrated milling and threshing units powered by solar, allowing farmers to process harvest at point-of-sale.',
-    tag: 'PUE-as-a-Service',
-    sdg: 'SDG 1',
-    mapCoordinates: { top: '34%', left: '40%' }   // ~7.5°E, 10.5°N
-  },
-  {
-    id: 'kano',
-    stateName: 'Kano State',
-    projectTitle: 'Tomato Preservation Node',
-    description: 'Solar blast cooling units that preserve tomato harvest for up to 3 weeks, stabilizing market prices.',
-    tag: 'Food Security',
-    sdg: 'SDG 2',
-    mapCoordinates: { top: '19%', left: '48%' }   // ~8.5°E, 12.0°N
-  }
-];
-
-interface InteractiveMapSectionProps {
-  onNavigate?: (page: any, id?: any) => void;
+// Nigeria bounding box: lon 2.65–14.68°E, lat 4.24–13.88°N
+function geoToMapCoords(position: string): { top: string; left: string } | null {
+  const nums = position.replace(/[°ENSW\s]/g, '').split(',').map(Number);
+  if (nums.length < 2 || isNaN(nums[0]) || isNaN(nums[1])) return null;
+  const [lon, lat] = nums;
+  return {
+    left: `${((lon - 2.65) / 12.03 * 100).toFixed(1)}%`,
+    top:  `${((13.88 - lat) / 9.64  * 100).toFixed(1)}%`,
+  };
 }
 
-const InteractiveMapSection: React.FC<InteractiveMapSectionProps> = ({ onNavigate }) => {
-  const [selectedLocation, setSelectedLocation] = useState<MapLocation>(LOCATIONS[0]);
+// Fallback hardcoded locations (used when CMS location has no position string)
+interface InteractiveMapSectionProps {
+  onNavigate?: (page: any, id?: any) => void;
+  reachData?: ReachSection | null;
+}
+
+const InteractiveMapSection: React.FC<InteractiveMapSectionProps> = ({ onNavigate, reachData }) => {
+  // Merge CMS locations with fallback data.
+  // If a CMS location has a `position` string, compute its map pin from geographic coords.
+  // Otherwise fall back to the matching hardcoded entry (matched by name).
+  const locations = useMemo<MapLocation[]>(() => {
+    const cms = reachData?.projects_showcase;
+    if (!cms?.length) return [];
+
+    return cms.map((item, i): MapLocation => {
+      const mapCoordinates = (item.position ? geoToMapCoords(item.position) : null);
+
+      const sdgNums = item.sdgs;
+      const sdgLabel = Array.isArray(sdgNums)
+        && `SDG ${sdgNums[0]}`
+        ;
+
+      return {
+        id: String(item.id),
+        stateName:    item.state_deployed,
+        projectTitle: item.title,
+        description:  item.description,
+        tag:          item.sector,
+        sdg:          sdgLabel,
+        mapCoordinates,
+      };
+    });
+  }, [reachData]);
+
+  const [selectedLocation, setSelectedLocation] = useState<MapLocation>(locations[0]);
 
   return (
     <section className="bg-gray-50 py-12 px-6 overflow-hidden">
@@ -82,7 +72,7 @@ const InteractiveMapSection: React.FC<InteractiveMapSectionProps> = ({ onNavigat
             <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-6 px-4">
               Select Location
             </h4>
-            {LOCATIONS.map((loc) => (
+            {locations.map((loc) => (
               <button
                 key={loc.id}
                 onClick={() => setSelectedLocation(loc)}
@@ -109,7 +99,7 @@ const InteractiveMapSection: React.FC<InteractiveMapSectionProps> = ({ onNavigat
             <div className="relative w-full max-w-[460px]">
              <Image width={600} height={524} src="/ng.svg" alt="Map of Nigeria" className="w-full h-auto drop-shadow-md" />
               {/* Location pins — positioned over the SVG */}
-              {LOCATIONS.map((loc) => (
+              {locations.map((loc) => (
                 <button
                   key={`pin-${loc.id}`}
                   onClick={() => setSelectedLocation(loc)}
@@ -135,52 +125,104 @@ const InteractiveMapSection: React.FC<InteractiveMapSectionProps> = ({ onNavigat
           {/* COLUMN 3: Project Detail Card */}
           <div className="lg:col-span-3 flex items-start">
             <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedLocation.id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.4 }}
-                className="bg-white border border-gray-100 p-8 rounded-[2.5rem] shadow-xl w-full"
-              >
-                <div className="mb-6">
-                  <span className="bg-ag-lime/20 text-ag-green-950 text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full">
-                    {selectedLocation.tag}
-                  </span>
-                </div>
-
-                <div className="mb-1">
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    {selectedLocation.stateName}
-                  </span>
-                </div>
-
-                <h3 className="text-2xl font-bold text-ag-green-950 mb-4 leading-tight">
-                  {selectedLocation.projectTitle}
-                </h3>
-
-                <p className="text-sm text-gray-500 font-light leading-relaxed mb-10">
-                  {selectedLocation.description}
-                </p>
-
-                <div className="flex items-center justify-between pt-8 border-t border-gray-200">
-                  <button
-                    onClick={() => onNavigate?.('project-detail', selectedLocation.id)}
-                    className="w-12 h-12 rounded-full bg-ag-lime flex items-center justify-center text-ag-green-950 shadow-lg shadow-ag-lime/30 hover:scale-105 transition-transform"
-                  >
-                    <ArrowRight className="w-5 h-5" />
-                  </button>
-
-                  <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-2xl shadow-sm border border-gray-100">
-                    <div className="w-6 h-6 bg-ag-green-950 rounded flex items-center justify-center">
-                      <Globe className="w-3.5 h-3.5 text-white" />
-                    </div>
-                    <span className="text-[10px] font-bold text-ag-green-950 uppercase tracking-widest">
-                      {selectedLocation.sdg}
+              {selectedLocation.projectTitle && selectedLocation.description ? (
+                <motion.div
+                  key={selectedLocation.id}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.4 }}
+                  className="bg-white border border-gray-100 p-8 rounded-[2.5rem] shadow-xl w-full"
+                >
+                  <div className="mb-6">
+                    <span className="bg-ag-lime/20 text-ag-green-950 text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full">
+                      {selectedLocation.tag}
                     </span>
                   </div>
-                </div>
-              </motion.div>
+
+                  <div className="mb-1">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                      {selectedLocation.stateName}
+                    </span>
+                  </div>
+
+                  <h3 className="text-2xl font-bold text-ag-green-950 mb-4 leading-tight">
+                    {selectedLocation.projectTitle}
+                  </h3>
+
+                  <p className="text-sm text-gray-500 font-light leading-relaxed mb-10">
+                    {selectedLocation.description}
+                  </p>
+
+                  <div className="flex items-center justify-between pt-8 border-t border-gray-200">
+                    <button
+                      onClick={() => onNavigate?.('project-detail', selectedLocation.id)}
+                      className="w-12 h-12 rounded-full bg-ag-lime flex items-center justify-center text-ag-green-950 shadow-lg shadow-ag-lime/30 hover:scale-105 transition-transform"
+                    >
+                      <ArrowRight className="w-5 h-5" />
+                    </button>
+
+                    <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-2xl shadow-sm border border-gray-100">
+                      <div className="w-6 h-6 bg-ag-green-950 rounded flex items-center justify-center">
+                        <Globe className="w-3.5 h-3.5 text-white" />
+                      </div>
+                      <span className="text-[10px] font-bold text-ag-green-950 uppercase tracking-widest">
+                        {selectedLocation.sdg}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key={`${selectedLocation.id}-pending`}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.4 }}
+                  className="bg-white border border-gray-100 p-8 rounded-[2.5rem] shadow-xl w-full"
+                >
+                  <div className="mb-6">
+                    <span className="bg-ag-lime/20 text-ag-green-950 text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full">
+                      Pipeline
+                    </span>
+                  </div>
+
+                  <div className="mb-1">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                      {selectedLocation.stateName}
+                    </span>
+                  </div>
+
+                  <h3 className="text-2xl font-bold text-ag-green-950 mb-4 leading-tight">
+                    Deployment in Progress.
+                  </h3>
+
+                  <p className="text-sm text-gray-500 font-light leading-relaxed mb-10">
+                    We are actively scoping and structuring productive use assets for this region. Site assessments are underway.
+                  </p>
+
+                  <div className="flex items-center justify-between pt-8 border-t border-gray-200">
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ag-lime opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-ag-lime" />
+                      </span>
+                      <span className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+                        Coming Soon
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-2xl shadow-sm border border-gray-100">
+                      <div className="w-6 h-6 bg-ag-green-950 rounded flex items-center justify-center">
+                        <Globe className="w-3.5 h-3.5 text-white" />
+                      </div>
+                      <span className="text-[10px] font-bold text-ag-green-950 uppercase tracking-widest">
+                        2025 — 26
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
 

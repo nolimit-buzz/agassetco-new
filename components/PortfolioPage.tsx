@@ -174,11 +174,11 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onNavigate, data }) => {
       </section>
 
       {/* 01. GEOGRAPHIC FOOTPRINT */}
-      <section className="py-24 bg-gray-50 border-t border-gray-100 overflow-hidden">
+      <section className="pt-24 bg-gray-50 border-t border-gray-100 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 mb-12">
           <SectionHeader number="01" category={reachData?.position || "Reach"} title={reachData?.title || "Geographic Footprint."} />
         </div>
-        <InteractiveMapSection onNavigate={onNavigate} />
+        <InteractiveMapSection onNavigate={onNavigate} reachData={reachData} />
       </section>
 
       {/* 02. FEATURED PROJECTS */}
@@ -205,7 +205,7 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onNavigate, data }) => {
             </div>
           </div>
           
-          <div className="flex flex-wrap gap-4 mb-16 border-b border-gray-100 pb-8">
+          <div className="flex flex-wrap gap-4 mb-16">
              {allCategories.map((cat) => (
                <button 
                  key={cat}
@@ -462,7 +462,7 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ onNavigate, data }) => {
       </section>
 
       {/* 05. THE CHALLENGE */}
-      <ProblemSolution data={challengeData} />
+      {/* <ProblemSolution data={challengeData} /> */}
 
       <section className="relative bg-ag-green-950 py-32 overflow-hidden border-t border-white/5">
         <motion.div 

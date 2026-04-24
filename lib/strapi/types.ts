@@ -201,18 +201,24 @@ export interface PortfolioHeroSection {
   hero_img: StrapiMedia | null;
 }
 
+export interface ReachProjectShowcase {
+  id: number;
+  title: string | null;
+  sector: string | null;
+  state_deployed: string | null;
+  description: string | null;
+  sdgs: number[] | null;
+  url: string | null;
+  // Geographic coordinates string, e.g. "7.0°E, 4.85°N"
+  position: string | null;
+}
+
 export interface ReachSection {
   __component: 'sections.reach';
   id: number;
   title: string | null;
-  position: string | null;
-  locations: {
-    id: number;
-    name: string | null;
-    x: number | null;
-    y: number | null;
-  }[] | null;
-  project: Project[] | null;
+  sectionLabel: string | null;
+  projects_showcase: ReachProjectShowcase[] | null;
 }
 
 export interface CaseStudiesSection {
