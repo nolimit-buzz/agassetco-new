@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Globe } from 'lucide-react';
-
+import Image from 'next/image';
 interface MapLocation {
   id: string;
   stateName: string;
@@ -77,7 +77,6 @@ const InteractiveMapSection: React.FC<InteractiveMapSectionProps> = ({ onNavigat
     <section className="bg-gray-50 py-12 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch min-h-[600px]">
-
           {/* COLUMN 1: State Selector */}
           <div className="lg:col-span-3 flex flex-col gap-2">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-6 px-4">
@@ -106,58 +105,9 @@ const InteractiveMapSection: React.FC<InteractiveMapSectionProps> = ({ onNavigat
           </div>
 
           {/* COLUMN 2: Nigeria SVG Map */}
-          <div className="lg:col-span-6 relative flex items-center justify-center p-4">
+          <div className="lg:col-span-6 relative flex items-start justify-center">
             <div className="relative w-full max-w-[460px]">
-              {/*
-                Nigeria outline — geographic bounding box:
-                  lon 2.65–14.68°E, lat 4.24–13.88°N
-                SVG viewBox 0 0 500 520  (500 × 520 px)
-                  x = (lon − 2.65) / 12.03 × 500
-                  y = (13.88 − lat) / 9.64  × 520
-                Path traced clockwise from SW corner.
-              */}
-              <svg
-                viewBox="0 0 500 520"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-full h-auto drop-shadow-md"
-                aria-label="Map of Nigeria"
-              >
-                {/* Country fill */}
-                <path
-                  d="
-                    M 5,398
-                    L 30,398 L 55,390 L 75,395
-                    L 90,420 L 102,450 L 115,470 L 130,490
-                    L 148,505 L 165,515 L 185,518
-                    L 205,516 L 220,518 L 238,515
-                    L 255,505 L 272,490 L 285,472
-                    L 298,455 L 312,440 L 328,425 L 355,405
-                    L 385,375 L 410,340 L 435,300
-                    L 452,258 L 468,210 L 480,160
-                    L 488,110 L 490,62
-                    L 475,25 L 455,8
-                    L 420,5 L 385,15 L 330,10 L 280,8
-                    L 230,8 L 178,12 L 130,22 L 85,35
-                    L 50,52 L 22,78
-                    L 8,125 L 5,175 L 5,225 L 5,275 L 5,325 L 5,360
-                    Z
-                  "
-                  fill="#d1fae5"
-                  stroke="#065f46"
-                  strokeWidth="2"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                />
-
-                {/* Subtle internal region dividers (simplified geopolitical zones) */}
-                {/* North–South divider (rough Middle Belt line ~lat 9.5°N → y≈228) */}
-                <line x1="5" y1="228" x2="452" y2="228" stroke="#065f46" strokeWidth="0.6" strokeDasharray="6 5" opacity="0.3" />
-                {/* NW–NE divider (~lat 12°N → y≈98) */}
-                <line x1="5" y1="98" x2="490" y2="98" stroke="#065f46" strokeWidth="0.6" strokeDasharray="6 5" opacity="0.3" />
-                {/* FCT/centre vertical (~lon 7.5°E → x≈202) */}
-                <line x1="202" y1="8" x2="202" y2="518" stroke="#065f46" strokeWidth="0.6" strokeDasharray="6 5" opacity="0.3" />
-              </svg>
-
+             <Image width={600} height={524} src="/ng.svg" alt="Map of Nigeria" className="w-full h-auto drop-shadow-md" />
               {/* Location pins — positioned over the SVG */}
               {LOCATIONS.map((loc) => (
                 <button
@@ -183,7 +133,7 @@ const InteractiveMapSection: React.FC<InteractiveMapSectionProps> = ({ onNavigat
           </div>
 
           {/* COLUMN 3: Project Detail Card */}
-          <div className="lg:col-span-3 flex items-center">
+          <div className="lg:col-span-3 flex items-start">
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedLocation.id}
