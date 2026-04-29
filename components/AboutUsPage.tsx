@@ -8,8 +8,6 @@ import {
   Lock, 
   TrendingUp as TrendingUpIcon, 
   Handshake, 
-  ChevronRight, 
-  Home, 
   Building2, 
   Zap, 
   Users, 
@@ -28,6 +26,7 @@ import {
 } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 import DevelopmentImpact from './DevelopmentImpact';
+import Breadcrumb from './Breadcrumb';
 
 interface AboutUsPageProps {
   onNavigate?: (page: any) => void;
@@ -75,14 +74,11 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ onNavigate }) => {
         >
           {/* Standardized Meta Header with Breadcrumbs */}
           <motion.div variants={fadeInUp as any} className="flex flex-row items-center justify-between mb-12 border-b border-gray-100 pb-8">
-            <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-ag-green-950 bg-gray-50 px-4 py-2 rounded-full w-fit border border-gray-100">
-              <Home className="w-2.5 h-2.5" />
-              <span className="cursor-pointer hover:text-ag-lime transition-colors" onClick={() => onNavigate?.('home')}>Home</span>
-              <ChevronRight className="w-2.5 h-2.5 opacity-50" />
-              <span className="opacity-50">Company</span>
-              <ChevronRight className="w-2.5 h-2.5 opacity-50" />
-              <span className="text-ag-green-950">About Us</span>
-            </div>
+            <Breadcrumb items={[
+              { label: 'Home', onClick: () => onNavigate?.('home') },
+              { label: 'Company' },
+              { label: 'About Us' },
+            ]} />
             
             <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-ag-green-950">
               01 AgAsset Corporate Presentation — 2025

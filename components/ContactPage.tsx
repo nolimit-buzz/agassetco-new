@@ -3,7 +3,8 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Phone, ArrowRight, ChevronRight, Home, Download, FileCheck, ClipboardList, BarChart, ChevronDown as ChevronDownIcon } from 'lucide-react';
+import { Mail, MapPin, Phone, ArrowRight, Download, FileCheck, ClipboardList, BarChart, ChevronDown as ChevronDownIcon } from 'lucide-react';
+import Breadcrumb from './Breadcrumb';
 import SectionHeader from './SectionHeader';
 
 interface ContactPageProps {
@@ -44,14 +45,11 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
         >
           {/* Standardized Meta Header with Breadcrumbs */}
           <motion.div variants={fadeInUp as any} className="flex flex-row items-center justify-between mb-12 border-b border-gray-100 pb-8">
-            <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-ag-green-950 bg-gray-50 px-4 py-2 rounded-full w-fit border border-gray-100">
-              <Home className="w-2.5 h-2.5" />
-              <span className="cursor-pointer hover:text-ag-lime transition-colors" onClick={() => onNavigate?.('home')}>Home</span>
-              <ChevronRight className="w-2.5 h-2.5 opacity-50" />
-              <span className="opacity-50">Connect</span>
-              <ChevronRight className="w-2.5 h-2.5 opacity-50" />
-              <span className="text-ag-green-950">Contact Us</span>
-            </div>
+            <Breadcrumb items={[
+              { label: 'Home', onClick: () => onNavigate?.('home') },
+              { label: 'Connect' },
+              { label: 'Contact Us' },
+            ]} />
             
             <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-ag-green-950">
               01 Corporate Communication — 2025

@@ -49,7 +49,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden selection:bg-ag-lime selection:text-white font-sans">
+    <div className="min-h-screen bg-white overflow-x-clip selection:bg-ag-lime selection:text-white font-sans">
       <Navigation onNavigate={handleNavigate as any} currentPage={currentPage as any} />
       <main>{children}</main>
       <Footer onNavigate={handleNavigate as any} />

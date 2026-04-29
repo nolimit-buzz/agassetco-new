@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, Calendar, ArrowRight, Home, Share2 } from 'lucide-react';
+import { ChevronLeft, Calendar, ArrowRight, Share2 } from 'lucide-react';
 
 interface NewsDetailPageProps {
   articleId?: number | string | null;

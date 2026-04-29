@@ -18,7 +18,6 @@ import {
   ChevronLeft,
   Droplets,
   ChevronRight,
-  Home,
   Users,
   TrendingUp,
   Plus,
@@ -26,6 +25,7 @@ import {
   Info
 } from 'lucide-react';
 import SectionHeader from './SectionHeader';
+import Breadcrumb from './Breadcrumb';
 import type { ProjectDetail } from '@/lib/strapi';
 
 // --- DATA ---
@@ -407,17 +407,15 @@ const SingleProject: React.FC<SingleProjectProps> = ({ projectId, projectData, o
         {/* BREADCRUMBS & BACK */}
         <div className="absolute top-32 left-0 w-full z-30 px-6 no-print">
            <div className="max-w-7xl mx-auto flex items-center justify-between">
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-white/50 bg-white/5 backdrop-blur-md px-4 py-2 rounded-full w-fit border border-white/10 shadow-sm"
-              >
-                <Home className="w-2.5 h-2.5" />
-                <span className="cursor-pointer hover:text-white transition-colors" onClick={() => onNavigate?.('home')}>Home</span>
-                <ChevronRight className="w-2.5 h-2.5 opacity-30" />
-                <span className="cursor-pointer hover:text-white transition-colors" onClick={() => onNavigate?.('portfolio')}>Portfolio</span>
-                <ChevronRight className="w-2.5 h-2.5 opacity-30" />
-                <span className="text-white">Deal ng-{project.id.toLowerCase()}</span>
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+                <Breadcrumb
+                  variant="dark"
+                  items={[
+                    { label: 'Home', onClick: () => onNavigate?.('home') },
+                    { label: 'Portfolio', onClick: () => onNavigate?.('portfolio') },
+                    { label: `Deal ng-${project.id.toLowerCase()}` },
+                  ]}
+                />
               </motion.div>
 
               <button 

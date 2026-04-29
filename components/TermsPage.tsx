@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Home, ChevronRight } from 'lucide-react';
+import Breadcrumb from './Breadcrumb';
 
 interface TermsPageProps {
   type: 'Terms & Conditions' | 'Privacy Policy';
@@ -85,14 +85,11 @@ const TermsPage: React.FC<TermsPageProps> = ({ type, onNavigate }) => {
         >
           {/* META HEADER: Adjusted to match News/Portfolio style */}
           <motion.div variants={fadeInUp as any} className="flex flex-row items-center justify-between mb-12 border-b border-gray-100 pb-8">
-            <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-ag-green-950 bg-gray-50 px-4 py-2 rounded-full w-fit border border-gray-100">
-              <Home className="w-2.5 h-2.5" />
-              <span className="cursor-pointer hover:text-ag-lime transition-colors" onClick={() => onNavigate?.('home')}>Home</span>
-              <ChevronRight className="w-2.5 h-2.5 opacity-50" />
-              <span className="opacity-50">Legal</span>
-              <ChevronRight className="w-2.5 h-2.5 opacity-50" />
-              <span className="text-ag-green-950">{type}</span>
-            </div>
+            <Breadcrumb items={[
+              { label: 'Home', onClick: () => onNavigate?.('home') },
+              { label: 'Legal' },
+              { label: type },
+            ]} />
             
             <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-ag-green-950">
               Legal Compliance Framework — v2.5
